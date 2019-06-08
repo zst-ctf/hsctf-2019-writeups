@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+import gmpy2
+
+# Include N, e, c
+exec(open("secure.txt").read())
+
+# Factorised using YAFU
+p = 16225510719965861964299051658340559066224635411075742500953901749924501886090804067406052688894869028683583501052917637552385089084807531319036985272636554557876754514524927502408114799014949174520357440885167280739363628642463479075654764698947461583766215118582826142179234382923872619079721726020446020581078274482268162477580369246821166693123724514271177264591824616458410293414647
+assert (p*p) == n
+
+# Compute phi = p * (p-1) for equal primes
+# https://crypto.stackexchange.com/a/26864
+# https://crypto.stackexchange.com/a/53127
+phi = (p - 1) * (p)
+
+# Compute modular inverse of e
+d = gmpy2.invert(e, phi)
+
+# Decrypt ciphertext
+pt = pow(c, d, n)
+try:
+    pt = bytes.fromhex(hex(pt)[2:])
+except:
+    pt = bytes.fromhex('0' + hex(pt)[2:])
+
+print(pt)
